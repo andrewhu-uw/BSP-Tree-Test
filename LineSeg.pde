@@ -31,6 +31,23 @@ public class LineSeg
     this.c = c;
   }
   
+  public LineSeg(boolean isVector, double x0, double y0, double x1, double y1, color c)
+      throws IllegalArgumentException
+  {
+    if(!isVector || x0 != 0 || y0 != 0)
+    {
+      throw new IllegalArgumentException("Why the heck are you using this constructor, if "+
+                                          "you're not constructing a vector?");
+    }
+    /*This constructor does not swap the coordinates because a vector
+      needs x0 and y0 to always be zero*/
+    this.x0 = x0;
+    this.y0 = y0;
+    this.x1 = x1;
+    this.y1 = y1;
+    this.c = c;
+  }
+  
   public color getColor()
   {
     return this.c;
@@ -40,7 +57,7 @@ public class LineSeg
   {
     double dx = this.x1-this.x0;
     double dy = this.y1-this.y0;
-    return new LineSeg(0,0,-dy,dx,this.c);
+    return new LineSeg(true,0,0,-dy,dx,this.c);
   }
   
   public LineSeg normalized()

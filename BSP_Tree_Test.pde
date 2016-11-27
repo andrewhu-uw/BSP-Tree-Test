@@ -15,7 +15,8 @@ public void setup()
   lineList = new ArrayList<LineSeg>();
   lineList.add(new LineSeg(100,75,50,50,BLUE));
   strokeWeight(5);
-  println(lineList.get(0).getPerp());
+  LineSeg perp = lineList.get(0).getPerp();
+  println(perp  );
 }
 
 public void draw()
@@ -24,7 +25,7 @@ public void draw()
   for(LineSeg curr : lineList)
   {
     stroke(curr.getColor());
-    line(curr.x0,curr.y0,curr.x1,curr.y1);
+    line(curr);
   }
   if(settingLine)
   {
@@ -52,6 +53,11 @@ public void mousePressed()
     lineList.add(new LineSeg(settingLineX0, settingLineY0, mouseX, mouseY, newLineColor));
     settingLine = false;
   }
+}
+
+public void line(LineSeg curr)
+{
+  line(curr.x0,curr.y0,curr.x1,curr.y1);
 }
 
 public void line(double x0, double y0, double x1, double y1)
