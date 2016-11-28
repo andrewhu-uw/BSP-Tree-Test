@@ -115,9 +115,41 @@ public class BSPTree
     }
   }
   
-  List<LineSeg> getRenderList(Point perspect)
+  public List<LineSeg> getRenderList(Point perspect)
   {
-    return null;
+    List<LineSeg> renderList = new ArrayList<LineSeg>();
+    this.RLPri(perspect, this.root, renderList);
+    return renderList;
+  }
+  
+  public void RLPri(Point perspect, BSPTreeNode current, List<LineSeg> renderList)
+  {
+    if(current == null)
+    {
+      return;
+    }
+    else
+    if(current.isLeaf())
+    {
+      renderList.add(current.getLine());
+      return;
+    }
+    else
+    {
+      boolean isInFrontOf = inFrontOf(perspect, current.getLine());
+      if(isInFrontOf)
+      {
+        this.RLPri(perspect, current.getBehind(), renderList);
+        renderList.add(current.getLine());
+        this.RLPri(perspect, current.getInFront(), renderList);
+      }
+      else
+      {
+        this.RLPri(perspect, current.getInFront(), renderList);
+        renderList.add(current.getLine());
+        this.RLPri(perspect, current.getBehind(), renderList);
+      }
+    }
   }
   
   public void printTree()
@@ -173,6 +205,11 @@ public class BSPTree
     public LineSeg getLine()
     {
       return this.line;
+    }
+    
+    public boolean isLeaf()
+    {
+      return this.inFront == null && this.behind == null;
     }
   }
 }

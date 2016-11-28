@@ -22,6 +22,7 @@ public void setup()
   lineList.add(new LineSeg(50,70,110,200,RED));
   lineList.add(new LineSeg(170,140,200,80,BLACK));
   strokeWeight(5);
+  textSize(30);
   
   renderPriorityTree = new BSPTree(lineList);
   println("RED : "+RED);
@@ -29,18 +30,25 @@ public void setup()
   println("BLUE : "+BLUE);
   println("BLACK : "+BLACK);
   renderPriorityTree.printTree();
+  
+  perspectivePt = new Point(150,125);
+  List<LineSeg> renderList = renderPriorityTree.getRenderList(perspectivePt);
+  println(renderList);
 }
 
 public void draw()
 {
-  background(200);
+  background(255);
+  point(perspectivePt);
   
-  perspectivePt = new Point(200,200);
   List<LineSeg> renderList = renderPriorityTree.getRenderList(perspectivePt);
-  
-  for (LineSeg curr : lineList)
+  int inc = 0;
+  for (LineSeg curr : renderList)
   {
-    stroke(curr.getColor());
+    stroke(color(inc * 10));
+    fill(BLUE);
+    text(inc, (float)(curr.x0+curr.x1)/2,(float)(curr.y0+curr.y1)/2);
+    inc++;
     line(curr);
   }
   if (settingLine)

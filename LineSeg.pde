@@ -111,6 +111,6 @@ public class LineSeg
   public String toString()
   {
     return "("+this.x0+", "+this.y0+") -> ("+
-            this.x1+", "+this.y1+") " + this.c;
+            this.x1+", "+this.y1+") \n";
   }
 }
