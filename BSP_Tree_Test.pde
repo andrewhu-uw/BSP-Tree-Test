@@ -4,32 +4,44 @@ List<LineSeg> lineList;
 color RED = color(255, 0, 0);
 color GREEN = color(0, 255, 0);
 color BLUE = color(0, 0, 255);
+color BLACK = color(0);
 Random randInst = new Random();
 boolean settingLine = false;
 double settingLineX0 = 0;
 double settingLineY0 = 0;
 
+BSPTree renderPriorityTree = null;
+Point perspectivePt = null;
 
 public void setup()
 {
   size(640, 480);
   lineList = new ArrayList<LineSeg>();
-  lineList.add(new LineSeg(100, 100, 150, 25, BLUE));
-  lineList.add(new LineSeg(100,50,150,100,GREEN));
+  lineList.add(new LineSeg(100, 100, 175, 100, BLUE));
+  lineList.add(new LineSeg(100,75,100,125,GREEN));
+  lineList.add(new LineSeg(50,70,110,200,RED));
+  lineList.add(new LineSeg(170,140,200,80,BLACK));
   strokeWeight(5);
-  println(findIntersection(lineList.get(0),lineList.get(1)));
+  
+  renderPriorityTree = new BSPTree(lineList);
+  println("RED : "+RED);
+  println("GREEN : "+GREEN);
+  println("BLUE : "+BLUE);
+  println("BLACK : "+BLACK);
+  renderPriorityTree.printTree();
 }
 
 public void draw()
 {
   background(200);
   
+  perspectivePt = new Point(200,200);
+  List<LineSeg> renderList = renderPriorityTree.getRenderList(perspectivePt);
+  
   for (LineSeg curr : lineList)
   {
     stroke(curr.getColor());
     line(curr);
-    stroke(RED);
-    line(curr.getPerp());
   }
   if (settingLine)
   {

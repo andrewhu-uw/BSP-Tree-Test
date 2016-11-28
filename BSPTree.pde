@@ -10,9 +10,43 @@ public class BSPTree
     List<LineSeg> linesBehind = new ArrayList<LineSeg>();
     
     for(LineSeg currLine : localLineList)
-    {
-      List<Point> currPts = currLine.getPts();
-    }
+      {
+        List<Point> currPts = currLine.getPts();
+        boolean pt0InFront = inFrontOf(currPts.get(0), this.root.getLine());
+        boolean pt1InFront = inFrontOf(currPts.get(1), this.root.getLine());
+        
+        if(pt0InFront && pt1InFront)
+        {
+          linesInFront.add(currLine);
+        }
+        else
+        if(!pt0InFront && !pt1InFront)
+        {
+          linesBehind.add(currLine);
+        }
+        else
+        {
+          /*in this case currLine is only partially in front of the reference line
+            this means that we will have to split the line into two different lines:
+            one in front of the reference line, and one behind it to add to each list*/
+          LineSeg linePartInFront;
+          LineSeg linePartBehind;
+          Point intersectPt = findIntersection(currLine, this.root.getLine());
+          
+          if(pt0InFront)
+          {
+            linePartInFront = new LineSeg(currPts.get(0), intersectPt, currLine.getColor());
+            linePartBehind = new LineSeg(intersectPt, currPts.get(1), currLine.getColor());
+          }
+          else
+          {
+            linePartInFront = new LineSeg(currPts.get(1), intersectPt, currLine.getColor());
+            linePartBehind = new LineSeg(intersectPt, currPts.get(0), currLine.getColor());
+          }
+          linesInFront.add(linePartInFront);
+          linesBehind.add(linePartBehind);
+        }
+      }
     
     this.root.setInFront( this.recurConstrPri(linesInFront, this.root.getLine()));
     this.root.setBehind( this.recurConstrPri(linesBehind, this.root.getLine()));
@@ -20,6 +54,11 @@ public class BSPTree
   
   private BSPTreeNode recurConstrPri(List<LineSeg> remainingLines, LineSeg referenceLine)
   {
+    if(remainingLines.size() < 1)
+    {
+      return null;
+    }
+    else
     if(remainingLines.size() == 1)
     {
       return new BSPTreeNode(remainingLines.remove(0));
@@ -52,7 +91,20 @@ public class BSPTree
             one in front of the reference line, and one behind it to add to each list*/
           LineSeg linePartInFront;
           LineSeg linePartBehind;
-          Point intersectPt;
+          Point intersectPt = findIntersection(currLine, referenceLine);
+          
+          if(pt0InFront)
+          {
+            linePartInFront = new LineSeg(currPts.get(0), intersectPt, currLine.getColor());
+            linePartBehind = new LineSeg(intersectPt, currPts.get(1), currLine.getColor());
+          }
+          else
+          {
+            linePartInFront = new LineSeg(currPts.get(1), intersectPt, currLine.getColor());
+            linePartBehind = new LineSeg(intersectPt, currPts.get(0), currLine.getColor());
+          }
+          linesInFront.add(linePartInFront);
+          linesBehind.add(linePartBehind);
         }
       }
       
@@ -60,6 +112,30 @@ public class BSPTree
       current.setBehind( this.recurConstrPri(linesBehind, current.getLine()));
       
       return current;
+    }
+  }
+  
+  List<LineSeg> getRenderList(Point perspect)
+  {
+    return null;
+  }
+  
+  public void printTree()
+  {
+    this.TSPri(this.root);
+  }
+  
+  private void TSPri(BSPTreeNode node)
+  {
+    if(node == null)
+    {
+      return;
+    }
+    else
+    {
+      this.TSPri(node.getBehind());
+      println(node.getLine().toString());
+      this.TSPri(node.getInFront());
     }
   }
   
@@ -82,6 +158,16 @@ public class BSPTree
     public void setBehind(BSPTreeNode node)
     {
       this.behind = node;
+    }
+    
+    public BSPTreeNode getInFront()
+    {
+      return this.inFront;
+    }
+    
+    public BSPTreeNode getBehind()
+    {
+      return this.behind;
     }
     
     public LineSeg getLine()

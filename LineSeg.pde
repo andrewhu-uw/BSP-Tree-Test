@@ -34,6 +34,15 @@ public class LineSeg
     this.c = c;
   }
   
+  public LineSeg(Point a, Point b, color c)
+  {
+    this.x0 = a.x;
+    this.y0 = a.y;
+    this.x1 = b.x;
+    this.y1 = b.y;
+    this.c = c;
+  }
+  
   public LineSeg(boolean isVector, double x0, double y0, double x1, double y1, color c)
       throws IllegalArgumentException
   {
@@ -102,6 +111,6 @@ public class LineSeg
   public String toString()
   {
     return "("+this.x0+", "+this.y0+") -> ("+
-            this.x1+", "+this.y1+")";
+            this.x1+", "+this.y1+") " + this.c;
   }
 }
