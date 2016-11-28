@@ -91,6 +91,14 @@ public class LineSeg
     return sqrt((float)(dx * dx + dy * dy));
   }
   
+  public List<Point> getPts()
+  {
+    List<Point> ptList = new ArrayList<Point>();
+    ptList.add(new Point(this.x0,this.y0));
+    ptList.add(new Point(this.x1,this.y1));
+    return ptList;
+  }
+  
   public String toString()
   {
     return "("+this.x0+", "+this.y0+") -> ("+
