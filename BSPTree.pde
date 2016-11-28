@@ -52,6 +52,7 @@ public class BSPTree
             one in front of the reference line, and one behind it to add to each list*/
           LineSeg linePartInFront;
           LineSeg linePartBehind;
+          Point intersectPt;
         }
       }
       

@@ -14,6 +14,11 @@ public class Point
     return sqrt((float)(x * x + y * y));
   }
   
+  public Point scale(double scalar)
+  {
+    return new Point(x * scalar, y * scalar);
+  }
+  
   public String toString()
   {
     return "("+this.x+", "+this.y+")";

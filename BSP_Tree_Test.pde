@@ -9,25 +9,21 @@ boolean settingLine = false;
 double settingLineX0 = 0;
 double settingLineY0 = 0;
 
-Point examplePt;
 
 public void setup()
 {
   size(640, 480);
   lineList = new ArrayList<LineSeg>();
   lineList.add(new LineSeg(100, 100, 150, 25, BLUE));
+  lineList.add(new LineSeg(100,50,150,100,GREEN));
   strokeWeight(5);
-  
-  
+  println(findIntersection(lineList.get(0),lineList.get(1)));
 }
 
 public void draw()
 {
   background(200);
-  examplePt = new Point(mouseX,mouseY);
-  point(examplePt);
-  println(mouseX + ", " + mouseY);
-  println(inFrontOf(examplePt, lineList.get(0)));
+  
   for (LineSeg curr : lineList)
   {
     stroke(curr.getColor());
@@ -40,6 +36,37 @@ public void draw()
     stroke(GREEN);
     line(settingLineX0, settingLineY0, mouseX, mouseY);
   }
+}
+
+public Point findIntersection(LineSeg lineA, LineSeg lineB)
+{
+  /*For an explanation on how this works see this StackOverflow question
+    http://stackoverflow.com/questions/563198/how-do-you-detect-where-two-line-segments-intersect*/
+  
+  Point basePtA = lineA.getPts().get(0);
+  Point diffPtA = this.pointDiff(lineA.getPts().get(1), basePtA);
+  Point basePtB = lineB.getPts().get(0);
+  Point diffPtB = this.pointDiff(lineB.getPts().get(1), basePtB);
+  
+  //t = (q − p) × s / (r × s)
+  Point QdiffP = this.pointDiff(basePtB, basePtA);
+  double t = this.twoDCrossProd(QdiffP, diffPtB);
+  double RcrossS = this.twoDCrossProd(diffPtA, diffPtB);
+  t /= RcrossS;
+  
+  Point scaledDiff = diffPtA.scale(t);
+  
+  return new Point(basePtA.x + scaledDiff.x,basePtA.y + scaledDiff.y);
+}
+
+public double twoDCrossProd(Point a, Point b)
+{
+  return a.x * b.y - b.x * a.y;
+}
+
+public Point pointDiff(Point a, Point b)
+{
+  return new Point(a.x - b.x, a.y - b.y);
 }
 
 public boolean inFrontOf(Point toEval, LineSeg line)
