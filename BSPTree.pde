@@ -4,6 +4,7 @@ public class BSPTree
   
   public BSPTree(List<LineSeg> localLineList)
   {
+    localLineList = new ArrayList<LineSeg>(localLineList);
     this.root = new BSPTreeNode(localLineList.remove(0));
     List<LineSeg> linesInFront = new ArrayList<LineSeg>();
     List<LineSeg> linesBehind = new ArrayList<LineSeg>();
@@ -32,7 +33,26 @@ public class BSPTree
       for(LineSeg currLine : remainingLines)
       {
         List<Point> currPts = currLine.getPts();
+        boolean pt0InFront = inFrontOf(currPts.get(0), referenceLine);
+        boolean pt1InFront = inFrontOf(currPts.get(1), referenceLine);
         
+        if(pt0InFront && pt1InFront)
+        {
+          linesInFront.add(currLine);
+        }
+        else
+        if(!pt0InFront && !pt1InFront)
+        {
+          linesBehind.add(currLine);
+        }
+        else
+        {
+          /*in this case currLine is only partially in front of the reference line
+            this means that we will have to split the line into two different lines:
+            one in front of the reference line, and one behind it to add to each list*/
+          LineSeg linePartInFront;
+          LineSeg linePartBehind;
+        }
       }
       
       current.setInFront( this.recurConstrPri(linesInFront, current.getLine()));

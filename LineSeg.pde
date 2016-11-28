@@ -60,7 +60,7 @@ public class LineSeg
   {
     double dx = this.x1-this.x0;
     double dy = this.y1-this.y0;
-    return new Point(dx, dy);
+    return new Point(-dy, dx);
   }
   
   public LineSeg normalized()
