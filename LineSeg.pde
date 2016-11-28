@@ -8,11 +8,14 @@ public class LineSeg
   
   public LineSeg(double x0, double y0, double x1, double y1, color c)
   {
+    /*DEPRECTATED, we don't need to make the front vs back algorithm
+      common because front vs back is evaluated at all tree nodes during
+      rendering*/
     /*the reason we do these swaps here is so that the variable
       marked with 1 is always larger than the one with 0. That way the
       getNormal method will always return a predictable vector
       no matter which coordinate is (x0,y0) and which is (x1,y1)*/
-    if(x0 > x1)
+    /*if(x0 > x1)
     {
       double swap = x0;
       x0 = x1;
@@ -23,7 +26,7 @@ public class LineSeg
       double swap = y0;
       y0 = y1;
       y1 = swap;
-    }
+    }*/
     this.x0 = x0;
     this.y0 = y0;
     this.x1 = x1;
@@ -53,11 +56,11 @@ public class LineSeg
     return this.c;
   }
   
-  public LineSeg getPerp()
+  public Point getPerp()
   {
     double dx = this.x1-this.x0;
     double dy = this.y1-this.y0;
-    return new LineSeg(true,0,0,-dy,dx,this.c);
+    return new Point(dx, dy);
   }
   
   public LineSeg normalized()

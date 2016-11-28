@@ -13,10 +13,10 @@ public void setup()
 {
   size(640,480);
   lineList = new ArrayList<LineSeg>();
-  lineList.add(new LineSeg(100,75,50,50,BLUE));
+  lineList.add(new LineSeg(100,100,150,25,BLUE));
   strokeWeight(5);
-  LineSeg perp = lineList.get(0).getPerp();
-  println(perp  );
+  println(lineList.get(0).getPerp());
+  println(inFrontOf(new Point(125,50),lineList.get(0)));
 }
 
 public void draw()
@@ -34,9 +34,16 @@ public void draw()
   }
 }
 
-public boolean inFront()
+public boolean inFrontOf(Point toEval, LineSeg line)
 {
-  return true;
+  Point perpVec = line.getPerp();
+  
+  /*The angle between two vectors equation is:
+    cos(theta) = dot(u,v) / (length(u) * length(v))
+  */
+  
+  double angleBetween = acos((float)(dot(toEval,perpVec) / (toEval.length() * perpVec.length())));
+  return (angleBetween < PI);
 }
 
 public void mousePressed()
