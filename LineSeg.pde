@@ -34,6 +34,15 @@ public class LineSeg
     this.c = c;
   }
   
+  public LineSeg(Point a, Point b, color c)
+  {
+    this.x0 = a.x;
+    this.y0 = a.y;
+    this.x1 = b.x;
+    this.y1 = b.y;
+    this.c = c;
+  }
+  
   public LineSeg(boolean isVector, double x0, double y0, double x1, double y1, color c)
       throws IllegalArgumentException
   {
@@ -60,7 +69,7 @@ public class LineSeg
   {
     double dx = this.x1-this.x0;
     double dy = this.y1-this.y0;
-    return new Point(dx, dy);
+    return new Point(-dy, dx);
   }
   
   public LineSeg normalized()
@@ -91,9 +100,17 @@ public class LineSeg
     return sqrt((float)(dx * dx + dy * dy));
   }
   
+  public List<Point> getPts()
+  {
+    List<Point> ptList = new ArrayList<Point>();
+    ptList.add(new Point(this.x0,this.y0));
+    ptList.add(new Point(this.x1,this.y1));
+    return ptList;
+  }
+  
   public String toString()
   {
     return "("+this.x0+", "+this.y0+") -> ("+
-            this.x1+", "+this.y1+")";
+            this.x1+", "+this.y1+") \n";
   }
 }
